@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyInput 四槽任务电台｜本地语义样机</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="eyebrow">LESSON 07 · WINDOWS LOCAL PROTOTYPE</div>
+      <h1>四槽任务电台</h1>
+      <p>用可操作的本地样机验证“说进去、听回来”：先填文字模拟 ASR，再用页面按钮或实体 EasyInput USB 按键触发；任务由本地模拟执行器完成，固定提醒音播完才算听过。</p>
+      <div class="hero-bottom">
+        <span class="badge">USB 按键接入 · 录音 / 实体灯 / 板载扬声器未接</span>
+        <div class="hero-actions">
+          <button id="export-button" class="export-button" type="button">导出状态快照</button>
+          <button id="network-button" class="network-button" type="button" aria-pressed="true">模拟断网</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="overview" aria-label="状态总览">
+      <div class="overview-copy">
+        <span class="section-kicker">新语义 · D5</span>
+        <h2>排队压力灯</h2>
+        <p>根据 Host 槽位队列的等待条数显示压力，和 D1–D4 的未听信箱状态分开。离线时优先显示蓝色连接异常。</p>
+      </div>
+      <div class="d5-panel">
+        <span id="d5-lamp" class="lamp lamp-clear" aria-hidden="true"></span>
+        <div>
+          <strong id="d5-title">D5 · 无排队</strong>
+          <span id="d5-detail">等待中的指令 0 条</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-header">
+      <div>
+        <span class="section-kicker">S1–S4 输入 · S5–S8 听回</span>
+        <h2>四个独立任务槽</h2>
+      </div>
+      <p>同槽顺序执行，跨槽可并行。每个信箱灯只表示有未听结果。</p>
+    </div>
+    <section id="slot-grid" class="slot-grid" aria-label="四个任务槽位"></section>
+
+    <section class="bottom-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">AUDIO RECEIPT</span>
+            <h2>播放回执</h2>
+          </div>
+          <button id="stop-button" class="ghost-button" type="button" disabled>中断播放</button>
+        </div>
+        <p id="playback-status" class="playback-status" aria-live="polite">尚未播放提醒音。点击某个槽位的“听回来”开始播放。</p>
+        <p class="hint">运行 USB Raw Input 桥接时，实体 S1–S4 提交已填的文字，S5–S8 请求播放，页面无需保持前台；未运行桥接时，快捷键需要页面焦点。按 S1–S4 可中断当前播放并保留未读。只有电脑上的固定提醒音实际播完，浏览器才产生回执并消耗该条未听结果。</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="section-kicker">HOST EVENTS</span>
+            <h2>事件记录</h2>
+          </div>
+          <span class="event-note">最新在上</span>
+        </div>
+        <ol id="event-list" class="event-list" aria-live="polite"></ol>
+      </div>
+    </section>
+    <footer>本页验证状态语义及 USB 实体按键输入。固件烧录、设备录音、网络互通、真实 ASR/TTS、Codex 执行、实体灯和板载扬声器播放均未验收。</footer>
+  </main>
+  <audio id="reminder-audio" preload="auto" src="/fixed-reminder.wav"></audio>
+</body>
+</html>
